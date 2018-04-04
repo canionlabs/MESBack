@@ -1,0 +1,78 @@
+html {
+  height: 100%;
+}
+
+.form-box {
+  margin-top: 12%;
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+nav {
+  background-color: #333;
+}
+
+nav .brand-logo {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+nav #complement-title {
+  font-weight: 100;
+  color: #4ae387;
+  /* font-size: 19px; */
+}
+
+.card .card-title {
+  font-size: 15px;
+}
+
+.chart-box {
+  margin-top: 30px !important;
+}
+
+.flat-row {
+  margin-bottom: inherit;
+  line-height: 1;
+}
+
+.card-blue {
+  background-color: #4ab2e3;
+  border-top: .5rem solid #4ab2e3;
+}
+
+.card-green {
+  border-top: .5rem solid #4ae387;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-box {
+  margin-top: 50px;
+}
+
+.content {
+  flex: 1;
+}
+
+.logo-small {
+  width: 60px;
+  vertical-align: bottom;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+footer.page-footer {
+  background-color: #fbfbfb;
+  padding-top: 0;
+}
+
+footer {
+  bottom: 1px;
+}

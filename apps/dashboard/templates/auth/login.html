@@ -1,0 +1,22 @@
+{% extends 'components/base-login.html' %}
+
+{% block content %}
+  <div class="form-box">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="input-field col s6">
+          {{ form.username }}
+          <label for="id_username">Usuário</label>
+        </div>
+        <div class="input-field col s6">
+          {{ form.password }}
+          <label for="id_password">Senha</label>
+        </div>
+      </div>
+      <div class="row center">
+        <button class="btn center" type="submit">Login</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
