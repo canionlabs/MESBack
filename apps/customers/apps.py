@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class CustomersConfig(AppConfig):
-    name = 'customers'
+    name = 'apps.customers'
+    verbose_name = 'Clientes'
