@@ -1,0 +1,27 @@
+{% extends 'auth/base.html' %}
+
+{% block content %}
+  <div class="form-box">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="input-field col s12">
+          {{ form.username }}
+          <label for="id_username">Usuário</label>
+        </div>
+        <div class="input-field col s12">
+          {{ form.password }}
+          <label for="id_password">Senha</label>
+        </div>
+      </div>
+      <div class="row valign-wrapper center">
+        <div class="col s6">
+          <button class="btn center" type="submit">Login</button>
+        </div>
+        <div class="col s6">
+          <a class="vs-red" href="#">Esqueci a senha</a>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
