@@ -13,8 +13,18 @@ html {
   background-color: #4ae387;
 }
 
+.form-box .btn:hover {
+  border-radius: 10%;
+  background-color: #37ff87;
+}
+
 .vs-red {
   color: #e34a4a;
+}
+
+.vs-red:hover {
+  color: #ff2525;
+  text-shadow: 1px;
 }
 
 nav {
