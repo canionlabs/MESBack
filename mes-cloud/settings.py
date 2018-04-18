@@ -53,6 +53,7 @@ LOCAL_APPS = [
     # 'apps.api',
     'apps.customers',
     'apps.devices',
+    'apps.dashboard',
 ]
 
 INSTALLED_APPS = (DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS)
