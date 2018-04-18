@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class DevicesConfig(AppConfig):
-    name = 'devices'
+    name = 'apps.devices'
+    verbose_name = 'Modulos'

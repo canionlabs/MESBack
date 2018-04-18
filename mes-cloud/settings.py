@@ -50,9 +50,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'apps.core',
-    'apps.processor',
-    'apps.dashboard',
-    'apps.api',
+    # 'apps.api',
     'apps.customers',
     'apps.devices',
 ]
