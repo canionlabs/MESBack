@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
     url(r'^admin/', admin.site.urls),
 
-    url(r'/', include('apps.dashboard.urls', namespace='dashboard')),
+    url(r'^', include('apps.dashboard.urls', namespace='dashboard')),
     # url(r'^api/', include('apps.api.urls')),
 ]
