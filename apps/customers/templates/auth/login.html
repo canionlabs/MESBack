@@ -5,6 +5,11 @@
     <form method="post">
       {% csrf_token %}
       <div class="row">
+        {% if form.errors %}
+        <div class="form-error">
+          <p class="center red-text text-darken-3">Verifique o usuário e/ou senha.</p>
+        </div>
+        {% endif %}
         <div class="input-field col s12">
           {{ form.username }}
           <label for="id_username">Usuário</label>
