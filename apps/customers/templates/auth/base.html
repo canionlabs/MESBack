@@ -21,9 +21,8 @@
     <div class="nav-wrapper">
       <a href="{% url 'login' %}" class="brand-logo center">CanionLabs <span id="complement-title">MES</span></a>
       <ul class="left">
-        {{request.get_full_path}}
-        {% if request.get_full_path is '/forgot-password/' %}
-        <li><a href="{% url 'login' %}"><i class="material-icons">search</i></a></li>
+        {% if request.get_full_path == '/forgot-password/' %}
+        <li><a href="{% url 'login' %}"><i class="material-icons">keyboard_backspace</i></a></li>
         {% endif %}
       </ul>
     </div>
