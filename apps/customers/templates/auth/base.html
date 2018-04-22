@@ -17,11 +17,15 @@
   <title>CanionLabs - MES</title>
 </head>
 <body>
-
-
   <nav>
     <div class="nav-wrapper">
-      <a class="brand-logo center">CanionLabs <span id="complement-title">MES</span></a>
+      <a href="{% url 'login' %}" class="brand-logo center">CanionLabs <span id="complement-title">MES</span></a>
+      <ul class="left">
+        {{request.get_full_path}}
+        {% if request.get_full_path is '/forgot-password/' %}
+        <li><a href="{% url 'login' %}"><i class="material-icons">search</i></a></li>
+        {% endif %}
+      </ul>
     </div>
   </nav>
 

@@ -14,7 +14,6 @@ html {
 }
 
 .form-box .btn:hover {
-  border-radius: 10%;
   background-color: #37ff87;
 }
 
@@ -25,6 +24,14 @@ html {
 .vs-red:hover {
   color: #ff2525;
   text-shadow: 1px;
+}
+
+.vs-btn-blue {
+  background-color: #4ab2e3 !important;
+}
+
+.vs-btn-blue:hover {
+  background-color: #75caf2 !important;
 }
 
 nav {
