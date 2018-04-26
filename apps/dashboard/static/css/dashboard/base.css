@@ -1,3 +1,18 @@
+/* PAGE STRUCT
+********************/
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
 
 /* GENERAL
 ********************/
@@ -14,6 +29,21 @@
 *********************************/
 nav ul:last-of-type li:first-of-type {
   margin-right: 15px;
+}
+
+nav {
+  background-color: #333;
+}
+
+nav .brand-logo {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+nav #complement-title {
+  font-weight: 100;
+  color: #4ae387;
+  /* font-size: 19px; */
 }
 
 .dropdown-content {
@@ -35,4 +65,25 @@ nav ul:last-of-type li:first-of-type {
   border-left-color: #7d7d7d;
   border-left-style: solid;
   border-left-width: 1px;
+}
+
+
+/* FOOTER
+********************/
+.logo-small {
+  width: 60px;
+  vertical-align: bottom;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+footer.page-footer {
+  background-color: #fbfbfb;
+  padding-top: 0;
+}
+
+footer {
+  bottom: 1px;
 }

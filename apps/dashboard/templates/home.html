@@ -1,4 +1,9 @@
 {% extends 'components/base.html' %}
+{% load staticfiles %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/dasboard/home.css' %}" media="screen">
+{% endblock %}
 
 {% block content %}
 <div class="home-content">
@@ -152,14 +157,14 @@ Highcharts.chart('home-pie', {
       series: {
           dataLabels: {
               enabled: true,
-              format: '{point.name}: {point.y}%'
+              format: '{point.name}: {point.y}'
           }
       }
   },
 
   tooltip: {
       headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-      pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
+      pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
   },
 
   credits: {
