@@ -1,0 +1,16 @@
+{
+  "links":
+    {
+      "next":	"http://autopolar.canionlabs.io/api/production/?format=json&page=2",
+      "previous": null
+    },
+  "count": 0,
+  "results": [
+    {"device_id": "1a23df45g", "type": "a", "date": "2018-03-2018", "hour": "23:59:59"},
+    {"device_id": "1a23df45g", "type": "b", "date": "2018-03-2018", "hour": "23:59:59"},
+    {"device_id": "1a23df45g", "type": "c", "date": "2018-03-2018", "hour": "23:59:59"},
+    {"device_id": "1a23df45g", "type": "d", "date": "2018-03-2018", "hour": "23:59:59"},
+    {"device_id": "1a23df45g", "type": "a", "date": "2018-03-2018", "hour": "23:59:59"},
+    {"device_id": "1a23df45g", "type": "c", "date": "2018-03-2018", "hour": "23:59:59"}
+  ]
+}
