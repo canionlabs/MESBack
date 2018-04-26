@@ -15,6 +15,7 @@
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
   <link rel="stylesheet" href="{% static 'css/dash/home.css' %}" media="screen">
+  <link rel="stylesheet" href="{% static 'css/dash/base.css' %}" media="screen">
   <link rel="stylesheet" href="{% static 'css/home/chart.css' %}" media="screen">
   <title>CanionLabs - MES</title>
 </head>
@@ -28,12 +29,20 @@
         <li><a style="display: block" href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a></li>
       </ul>
       <ul class="right">
-        <li><span>Caio Víctor</span></li>
-        <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+        <li><span class="light-text">Bem vindo, Caio Víctor</span></li>
+        <li class="custom-left-border"><a class="dropdown-button" href="#!" data-activates="dropdown1" data-beloworigin="true"><i class="material-icons">arrow_drop_down</i></a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Logout Dropdown -->
+  <ul id='dropdown1' class='dropdown-content'>
+    <li><a class="no-format" href="#">Minha Conta</a></li>
+    <li class="divider"></li>
+    <li><a class="no-format" href="{% url 'logout' %}">Sair</a></li>
+  </ul>
+
+  <!-- Sidenav -->
   <ul id="slide-out" class="side-nav">
     <br>
     <li><a class="subheader">Dashboard</a></li>
@@ -71,7 +80,20 @@
   {% endblock %}
   <script src="{% static 'js/app.js' %}" charset="utf-8"></script>
   <script type="text/javascript">
-      $(".button-collapse").sideNav();
+    $(".button-collapse").sideNav();
+
+    $('.dropdown-button').dropdown({
+        inDuration: 300,
+        outDuration: 225,
+        constrainWidth: true, // Does not change width of dropdown to that of the activator
+        hover: false, // Activate on hover
+        gutter: 200, // Spacing from edge
+        belowOrigin: false, // Displays dropdown below the button
+        alignment: 'left', // Displays dropdown with edge aligned to the left of button
+        stopPropagation: false // Stops event propagation
+      }
+    );
+    console.log('oi');
   </script>
 </body>
 </html>
