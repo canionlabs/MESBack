@@ -1,2 +1,200 @@
 {% extends 'components/base.html' %}
-oi
+
+{% block content %}
+<div class="home-content">
+  <div class="row">
+    <!-- <div class="header-chart"> -->
+    <div id="home-chart"></div>
+    <!-- </div> -->
+  </div>
+  <div class="row valign-wrapper">
+    <div class="col s6">
+      <table class="bordered striped centered">
+        <tbody>
+          <tr>
+            <td>Maior Produção da Semana</td>
+            <td>Tipo A - 133.400</td>
+          </tr>
+          <tr>
+            <td>Maior Produção do Dia</td>
+            <td>Tipo C - 12.000</td>
+          </tr>
+          <tr>
+            <td>Total da Produção Semanal</td>
+            <td>12.000</td>
+          </tr>
+          <tr>
+            <td>Produção do dia</td>
+            <td>12.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col s6">
+      <div id="home-pie"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+Highcharts.chart('home-chart', {
+
+    title: {
+        text: 'Gráfico da Produção do Dia'
+    },
+    yAxis: {
+        maxPadding: 0.05,
+        title: {text: null}
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        // floating: true,
+        verticalAlign: 'middle'
+    },
+
+    xAxis: {
+        categories: [
+          '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00',
+          '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
+          '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',
+          '21:00', '22:00', '23:00'
+        ]
+    },
+    credits: {
+      enabled: false
+    },
+
+    series: [{
+        name: 'Tipo A',
+        data: [
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+        ]
+    }, {
+        name: 'Tipo B',
+        data: [
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+        ]
+    }, {
+        name: 'Tipo C',
+        data: [
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+        ]
+    }, {
+        name: 'Tipo D',
+        data: [
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+        ]
+    }],
+
+    exporting: {
+      enabled: false,
+    },
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+</script>
+
+<script type="text/javascript">
+// Create the chart
+Highcharts.chart('home-pie', {
+  chart: {
+      type: 'pie'
+  },
+  title: {
+      text: 'Visão Geral da Produção Semanal'
+  },
+  plotOptions: {
+      series: {
+          dataLabels: {
+              enabled: true,
+              format: '{point.name}: {point.y}%'
+          }
+      }
+  },
+
+  tooltip: {
+      headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+      pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
+  },
+
+  credits: {
+    enabled: false
+  },
+
+  exporting: {
+    enabled: false,
+  },
+
+  "series": [
+      {
+          "name": "Produção",
+          "colorByPoint": true,
+          "data": [
+              {
+                  "name": "Tipo A",
+                  "y": 12000,
+              },
+              {
+                  "name": "Tipo B",
+                  "y": 3999,
+              },
+              {
+                  "name": "Tipo C",
+                  "y": 200,
+              },
+              {
+                  "name": "Tipo D",
+                  "y": 50,
+              },
+          ]
+      }
+  ],
+  });
+</script>
+
+{% endblock %}
