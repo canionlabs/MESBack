@@ -56,7 +56,6 @@ Highcharts.chart('home-chart', {
     legend: {
         layout: 'vertical',
         align: 'right',
-        // floating: true,
         verticalAlign: 'middle'
     },
 
@@ -123,7 +122,27 @@ Highcharts.chart('home-chart', {
     }],
 
     exporting: {
-      enabled: false,
+        filename: 'Gráfico da Produção do Dia',
+        buttons: {
+            contextButton: {
+                enabled: false
+            },
+            exportButton: {
+                text: 'Exportar',
+                // Use only the download related menu items from the default
+                // context button
+                menuItems: [
+                    'downloadJPEG',
+                    'downloadPDF',
+                ]
+            },
+            printButton: {
+                text: 'Imprimir',
+                onclick: function () {
+                    this.print();
+                }
+            }
+        }
     },
 
     responsive: {
@@ -172,7 +191,27 @@ Highcharts.chart('home-pie', {
   },
 
   exporting: {
-    enabled: false,
+      filename: 'Visão Geral da Produção Semanal',
+      buttons: {
+          contextButton: {
+              enabled: false
+          },
+          exportButton: {
+              text: 'Exportar',
+              // Use only the download related menu items from the default
+              // context button
+              menuItems: [
+                  'downloadJPEG',
+                  'downloadPDF',
+              ]
+          },
+          printButton: {
+              text: 'Imprimir',
+              onclick: function () {
+                  this.print();
+              }
+          }
+      }
   },
 
   "series": [
