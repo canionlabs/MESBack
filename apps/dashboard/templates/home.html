@@ -2,18 +2,14 @@
 {% load staticfiles %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/dasboard/home.css' %}" media="screen">
+<link rel="stylesheet" href="{% static 'css/dashboard/home.css' %}" media="screen">
 {% endblock %}
 
 {% block content %}
 <div class="home-content">
-  <div class="row">
-    <!-- <div class="header-chart"> -->
-    <div id="home-chart"></div>
-    <!-- </div> -->
-  </div>
+  <br>
   <div class="row valign-wrapper">
-    <div class="col s6">
+    <div class="col s4">
       <table class="bordered striped centered">
         <tbody>
           <tr>
@@ -24,27 +20,62 @@
             <td>Maior Produção do Dia</td>
             <td>Tipo C - 12.000</td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col s4">
+      <table class="bordered striped centered">
+        <tbody>
           <tr>
-            <td>Total da Produção Semanal</td>
-            <td>12.000</td>
+            <td>Maior Produção da Semana</td>
+            <td>Tipo A - 133.400</td>
           </tr>
           <tr>
-            <td>Produção do dia</td>
-            <td>12.000</td>
+            <td>Maior Produção do Dia</td>
+            <td>Tipo C - 12.000</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="col s4">
+      <table class="bordered striped centered">
+        <tbody>
+          <tr>
+            <td>Maior Produção da Semana</td>
+            <td>Tipo A - 133.400</td>
+          </tr>
+          <tr>
+            <td>Maior Produção do Dia</td>
+            <td>Tipo C - 12.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <hr> -->
+  <div class="row">
+    <div id="chart-general-diary"></div>
+  </div>
+  <!-- <hr> -->
+  <div class="row valign-wrapper">
     <div class="col s6">
-      <div id="home-pie"></div>
+      <div id="chart-general-week"></div>
+    </div>
+    <div class="col s6">
+      <div id="chart-general-monthly"></div>
     </div>
   </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<script src={% static 'js/chart-theme.js' %}></script>
 <script>
-Highcharts.chart('home-chart', {
+Highcharts.chart('chart-general-diary', {
+    chart: {
+        type: 'line'
+    },
+
 
     title: {
         text: 'Gráfico da Produção do Dia'
@@ -87,24 +118,24 @@ Highcharts.chart('home-chart', {
         name: 'Tipo B',
         data: [
           Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 700),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 200),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 100),
           Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 400),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 300),
           Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
         ]
     }, {
         name: 'Tipo C',
         data: [
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 500),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 100),
           Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
-          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 100),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 500),
+          Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 300),
           Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000),
         ]
     }, {
@@ -164,8 +195,7 @@ Highcharts.chart('home-chart', {
 </script>
 
 <script type="text/javascript">
-// Create the chart
-Highcharts.chart('home-pie', {
+Highcharts.chart('chart-general-week', {
   chart: {
       type: 'pie'
   },
@@ -238,6 +268,103 @@ Highcharts.chart('home-pie', {
           ]
       }
   ],
+  });
+</script>
+
+<script type="text/javascript">
+  Highcharts.chart('chart-general-monthly', {
+
+    chart: {
+        type: 'column'
+    },
+
+    title: {
+        text: 'Visão Geral da Produção Mensal'
+    },
+
+    credits: {
+      enabled: false
+    },
+
+    xAxis: {
+        categories: ['Tipo A', 'Tipo B', 'Tipo C', 'Tipo D']
+    },
+
+    yAxis: {
+        allowDecimals: false,
+        min: 0,
+        title: {
+            text: null
+        }
+    },
+
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                format: '{point.y}'
+            }
+        }
+    },
+
+    legend: {
+        enabled: false
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+    },
+
+    "series": [
+        {
+            "name": "Categoria",
+            "colorByPoint": true,
+            "data": [
+                {
+                    "name": "Tipo A",
+                    "y": 133000,
+                },
+                {
+                    "name": "Tipo B",
+                    "y": 30000,
+                },
+                {
+                    "name": "Tipo C",
+                    "y": 120000,
+                },
+                {
+                    "name": "Tipo D",
+                    "y": 45000,
+                },
+            ]
+        }
+    ],
+
+    exporting: {
+        filename: 'Visão Geral da Produção Mensal',
+        buttons: {
+            contextButton: {
+                enabled: false
+            },
+            exportButton: {
+                text: 'Exportar',
+                // Use only the download related menu items from the default
+                // context button
+                menuItems: [
+                    'downloadJPEG',
+                    'downloadPDF',
+                ]
+            },
+            printButton: {
+                text: 'Imprimir',
+                onclick: function () {
+                    this.print();
+                }
+            }
+        }
+    },
   });
 </script>
 

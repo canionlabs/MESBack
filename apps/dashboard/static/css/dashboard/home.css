@@ -4,3 +4,9 @@
 	height: 40vh;
 	margin: 0 auto
 }
+
+.bordered-left {
+	/* border-left-color: red; */
+	border-left-style: solid;
+	border-width: 1px;
+}
