@@ -23,6 +23,9 @@
 
 @media only screen and (max-width: 768px) {
 	.chart-box {
-	  margin-top: 20px !important;
+	  margin-top: 0px !important;
+	}
+	.card {
+		margin: 5px !important;
 	}
 }
