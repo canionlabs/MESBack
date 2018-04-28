@@ -29,3 +29,13 @@
 		margin: 5px !important;
 	}
 }
+
+#mobile-indicator {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    #mobile-indicator {
+        display: block;
+    }
+}
