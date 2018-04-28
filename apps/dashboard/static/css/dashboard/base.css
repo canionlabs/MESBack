@@ -87,3 +87,14 @@ footer.page-footer {
 footer {
   bottom: 1px;
 }
+
+/* MOBILE
+*****************/
+@media only screen and (max-width: 768px) {
+	nav ul li {
+    float: none;
+  }
+  nav .brand-logo {
+    left: 27vw !important;
+  }
+}

@@ -19,3 +19,10 @@
 .card-green {
   border-top: .5rem solid #4ae387;
 }
+
+
+@media only screen and (max-width: 768px) {
+	.chart-box {
+	  margin-top: 20px !important;
+	}
+}
