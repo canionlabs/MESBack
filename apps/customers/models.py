@@ -18,6 +18,9 @@ class Organization(DefaultModel):
         verbose_name = 'Organização'
         verbose_name_plural = 'Organizações'
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Client(DefaultModel):
 
