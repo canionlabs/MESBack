@@ -44,6 +44,9 @@ class Client(DefaultModel):
     def __str__(self):
         return f'{self.user.username}'
 
+    def get_devices(self):
+        return self.organization.org_device.all()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
