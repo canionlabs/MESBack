@@ -17,11 +17,17 @@ class ClientInline(admin.StackedInline):
 class CustomUserAdmin(UserAdmin):
     def __init__(self, *args, **kwargs):
         super(UserAdmin, self).__init__(*args, **kwargs)
-        UserAdmin.list_display = list(UserAdmin.list_display)
+        UserAdmin.list_display = list(UserAdmin.list_display) + ['get_org']
 
     inlines = [
         ClientInline
     ]
+
+    def get_org(self, obj):
+        return obj.client.organization
+
+    get_org.admin_order_field = 'organization'
+    get_org.short_description = 'Organização'
 
 
 admin.site.unregister(User)

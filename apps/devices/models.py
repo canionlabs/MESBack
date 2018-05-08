@@ -15,7 +15,7 @@ class Device(DefaultModel):
     type_d = models.CharField('Tipo D', max_length=75, null=True, blank=True)
 
     def __str__(self):
-        return name or device_id
+        return self.name or self.device_id
 
     class Meta:
         verbose_name = 'Dispositivo'
