@@ -8,7 +8,7 @@ from apps.core.models import DefaultModel
 
 class Organization(DefaultModel):
     name = models.CharField('Nome', max_length=75)
-    addrees = models.TextField('Endereço', null=True, blank=True)
+    active = models.BooleanField('Ativo', default=True)
     phone = models.CharField('Telefone', max_length=75, null=True, blank=True)
     chatbot_token = models.CharField(
         'Token do ChatBot', max_length=75, null=True, blank=True
