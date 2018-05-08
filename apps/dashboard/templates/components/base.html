@@ -45,13 +45,14 @@
   <!-- Sidenav -->
   <ul id="slide-out" class="side-nav">
     <br>
-    <li><a class="subheader">Dashboard</a></li>
+    <!-- <li><a class="subheader">Dashboard</a></li> -->
+    <!-- <li><div class="divider"></div></li> -->
+    <li><a class="waves-effect" href="#">Página Inicial</a></li>
+    <li><a class="subheader">Esteiras</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="#">Home</a></li>
-    <li><a class="waves-effect" href="#">Tipo A</a></li>
-    <li><a class="waves-effect" href="#">Tipo B</a></li>
-    <li><a class="waves-effect" href="#">Tipo C</a></li>
-    <li><a class="waves-effect" href="#">Tipo D</a></li>
+    {% for device in devices %}
+    <li><a class="waves-effect" href="#">{{device.name}}</a></li>
+    {% endfor %}
     <br>
     <li><a class="subheader">Relatórios</a></li>
     <li><div class="divider"></div></li>
