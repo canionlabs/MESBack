@@ -9,23 +9,27 @@
 <div class="home-content">
   <div id="mobile-indicator"></div>
   <div class="flat-row row ">
-    <div class="col s12 m6 l3 center chart-box">
+    <div class="col s12 m6 l3 left chart-box">
       <div class="card card-blue">
         <div class="card-content white-text">
           <span class="card-title">PRODUÇÃO TOTAL DE HOJE</span>
-          <p>Tipo A</p>
+          {% for device in devices %}
+          <p>{% if device.total_production %}{{device.name}} - {{device.total_production}}{% endif %}</p>
+          {% endfor %}
         </div>
       </div>
     </div>
-    <div class="col s12 m6 l3 center chart-box">
+    <div class="col s12 m6 l3 left chart-box">
       <div class="card card-green">
         <div class="card-content grey-text text-darken-2">
           <span class="card-title">MAIOR PRODUÇÃO DA SEMANA</span>
-          <p>Tipo B</p>
+          {% for device in devices %}
+          <p>{% if device.most_produced %}{{device.name}} - {{device.most_produced}}{% endif %}</p>
+          {% endfor %}
         </div>
       </div>
     </div>
-    <div class="col s12 m6 l3 center chart-box">
+    <div class="col s12 m6 l3 left chart-box">
       <div class="card card-blue">
         <div class="card-content white-text">
           <span class="card-title">PRODUÇÃO TOTAL SEMANAL</span>
@@ -33,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="col s12 m6 l3 center chart-box">
+    <div class="col s12 m6 l3 left chart-box">
       <div class="card card-green">
         <div class="card-content grey-text text-darken-2">
           <span class="card-title">INICIO DA PRODUÇÃO DIÁRIA</span>
