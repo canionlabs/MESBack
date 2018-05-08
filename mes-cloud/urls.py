@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'^forgot-password/$', customers_views.ForgotPassword.as_view(),
         name='forgot-password'),
 
-    url(r'^', include('apps.dashboard.urls', namespace='dashboard')),
+    url(r'', include('apps.dashboard.urls', namespace='dashboard')),
 ]
