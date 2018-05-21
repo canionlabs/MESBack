@@ -14,8 +14,8 @@
       <div class="card card-blue">
         <div class="card-content white-text">
           <span class="card-title">PRODUÇÃO TOTAL DE HOJE</span>
-          {% for device in devices %}
-          <p>{% if device.total_production %}{{device.name}} - {{device.total_production}}{% endif %}</p>
+          {% for card, value in cards.items %}
+          <p>{{card}} - {{value.daily_prod}}</p>
           {% endfor %}
         </div>
       </div>
@@ -24,8 +24,8 @@
       <div class="card card-green">
         <div class="card-content grey-text text-darken-2">
           <span class="card-title">MAIOR PRODUÇÃO DA SEMANA</span>
-          {% for device in devices %}
-          <p>{% if device.most_produced %}{{device.name}} - {{device.most_produced}}{% endif %}</p>
+          {% for card, value in cards.items %}
+          <p>{{card}} - {% weekly_production_by_type value %}</p>
           {% endfor %}
         </div>
       </div>
@@ -34,8 +34,8 @@
       <div class="card card-blue">
         <div class="card-content white-text">
           <span class="card-title">PRODUÇÃO TOTAL SEMANAL</span>
-          {% for device in devices %}
-          <p>{{device.name}} - 00</p>
+          {% for card, value in cards.items %}
+          <p>{{card}} - {{value.weekly_prod}}</p>
           {% endfor %}
         </div>
       </div>
@@ -44,8 +44,8 @@
       <div class="card card-green">
         <div class="card-content grey-text text-darken-2">
           <span class="card-title">INICIO DA PRODUÇÃO DIÁRIA</span>
-          {% for device in devices %}
-          <p>{{device.name}} - 08:30:45</p>
+          {% for card, value in cards.items %}
+          <p>{{card}} - {{value.daily_init_prod.0.time|slice:"10:"}}</p>
           {% endfor %}
         </div>
       </div>
@@ -261,22 +261,32 @@ Highcharts.chart('chart-general-week', {
           "name": "Produção",
           "colorByPoint": true,
           "data": [
+              {% for device in devices %}
+              {% if device.type_a %}
               {
-                  "name": "Tipo A",
-                  "y": 12000,
+                  "name": "{{device.type_a}}",
+                  "y": Math.floor(Math.random() * 1000),
               },
+              {% endif %}
+              {% if device.type_b %}
               {
-                  "name": "Tipo B",
-                  "y": 3999,
+                  "name": "{{device.type_b}}",
+                  "y": Math.floor(Math.random() * 1000),
               },
+              {% endif %}
+              {% if device.type_c %}
               {
-                  "name": "Tipo C",
-                  "y": 200,
+                  "name": "{{device.type_c}}",
+                  "y": Math.floor(Math.random() * 1000),
               },
+              {% endif %}
+              {% if device.type_d %}
               {
-                  "name": "Tipo D",
-                  "y": 50,
+                  "name": "{{device.type_d}}",
+                  "y": Math.floor(Math.random() * 1000),
               },
+              {% endif %}
+              {% endfor %}
           ]
       }
   ],

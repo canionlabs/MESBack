@@ -1,10 +1,9 @@
 from django.db import models
 from apps.core.models import DefaultModel
 
-import requests
-
 
 class Device(DefaultModel):
+
     organization = models.ForeignKey(
         'customers.Organization',
         related_name='org_device', on_delete=models.CASCADE
@@ -22,29 +21,3 @@ class Device(DefaultModel):
     class Meta:
         verbose_name = 'Dispositivo'
         verbose_name_plural = 'Dispositivos'
-
-    @property
-    def total_production(self):
-        r = requests.post(
-            f'http://127.0.0.1:8000/packages:list?device_id={self.device_id}'
-        )
-        return r.json()['count']
-
-    @property
-    def most_produced(self):
-        types = ['a', 'b', 'c', 'd']
-        count = {}
-        for t in types:
-            r = requests.post(
-                f'http://127.0.0.1:8000/packages:list?' +
-                'device_id={self.device_id}&type={t}'
-            )
-            count[t] = r.json()['count']
-
-        value = 0
-        for k, v in count.items():
-            if v > value:
-                most_produced = k
-                v = value
-
-        return getattr(self, ('type_' + most_produced))
