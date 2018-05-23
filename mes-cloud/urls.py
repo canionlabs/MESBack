@@ -30,4 +30,5 @@ urlpatterns = [
         name='forgot-password'),
 
     url(r'', include('apps.dashboard.urls', namespace='dashboard')),
+    url(r'^api/', include('apps.api.urls', namespace='api')),
 ]
