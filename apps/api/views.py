@@ -11,6 +11,14 @@ from mongoengine import connect
 connect('mes', alias='default')
 
 
+def fill_query(query, device):
+    default_types = ['a', 'b', 'c', 'd']
+    for pkg_type in default_types:
+        if not getattr(device, f'type_{pkg_type}'):
+            query = query.filter(package_type__ne=pkg_type)
+    return query
+
+
 class CardsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -19,20 +27,26 @@ class CardsView(APIView):
         start_day = now.replace(
             hour=0, minute=0, second=0
         )
-        final_day = now
+        final_day = now.replace(
+            hour=23, minute=59, second=59
+        )
         device_id = device.device_id
 
         def daily_prod():
-            return mongo_db.PackageModel.objects(
+            query = mongo_db.PackageModel.objects(
                 time__gte=start_day, time__lte=final_day, 
                 device_id=device_id
-            ).count()
+            ).all()
+            filter_query = fill_query(query, device)
+            return filter_query.count()
 
         def daily_init():
-            init_pkg = mongo_db.PackageModel.objects(
-                time__gte=start_day, time__lte=final_day, 
+            query = mongo_db.PackageModel.objects(
+                time__gte=start_day, time__lte=final_day,
                 device_id=device_id
-            ).limit(1)[0]
+            ).all()
+            filter_query = fill_query(query, device)
+            init_pkg = filter_query.limit(1)[0]
             if init_pkg:
                 return init_pkg.time.strftime('%H:%M:%S')
             else:
@@ -56,10 +70,12 @@ class CardsView(APIView):
             value = 0
             pkg_type = ''
             for t in ['a', 'b', 'c', 'd']:
-                count = mongo_db.PackageModel.objects(
+                query = mongo_db.PackageModel.objects(
                     time__gte=weekly_start_date, time__lte=final_day,
                     device_id=device_id, package_type=t
-                ).count()
+                ).all()
+                filter_query = fill_query(query, device)
+                count = filter_query.count()
                 if count > value:
                     value = count
                     pkg_type = t
@@ -74,10 +90,12 @@ class CardsView(APIView):
                 return start_week
 
             weekly_start_date = get_start_week(now)
-            return mongo_db.PackageModel.objects(
+            query = mongo_db.PackageModel.objects(
                 time__gte=weekly_start_date, time__lte=final_day,
                 device_id=device_id
-            ).count()
+            ).all()
+            filter_query = fill_query(query, device) 
+            return filter_query.count()
 
         return {
             'device_id': f'{device_id}',
@@ -132,4 +150,60 @@ class InfoMonthlyView(APIView):
         # rsp = {self.montly_prod(device) for device in devices}
         print(type(rsp))
         print(rsp)
+        return JsonResponse(rsp)
+
+
+class InfoWeeklyView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def weekly_prod(self, device):
+        def get_start_week(now):
+            start_week = now.replace(hour=0, minute=0, second=0)
+            one_day = timedelta(days=1)
+            while start_week.weekday() != 0:
+                start_week = start_week - one_day
+            return start_week
+
+        def get_name(pkg_type):
+            try:
+                return getattr(device, f'type_{pkg_type}')
+            except Exception as e:
+                pass
+
+        weekly_rsp = {}
+        now = datetime.now()
+        device_id = device.device_id
+        start_week = get_start_week(now)
+        final_week = now
+        one_day = timedelta(days=1)
+        types = ['a', 'b', 'c', 'd']
+        while start_week.weekday() <= final_week.weekday():
+            weekly_rsp[start_week.weekday()] = {}
+
+            for pkg_type in types:
+                type_name = get_name(pkg_type)
+                final_day = start_week.replace(hour=23, minute=59, second=59)
+                if type_name:
+                    type_count = mongo_db.PackageModel.objects(
+                        package_type=pkg_type, device_id=device_id,
+                        time__gte=start_week, time__lte=final_day
+                    ).count()
+                    weekly_rsp[start_week.weekday()][type_name] = type_count
+
+            start_week = start_week + one_day
+        return weekly_rsp
+
+    def get(self, request):
+        rsp = {}
+        client = self.request.user.client
+        devices = client.get_devices()
+        for device in devices:
+            for k, v in (self.weekly_prod(device)).items():
+                if rsp.get(k):
+                    rsp[k].update(v)
+                else:
+                    rsp[k] = v
+            # rsp.update(self.weekly_prod(device))
+            print(rsp)
+            # rsp[device.name] = self.weekly_prod(device)
         return JsonResponse(rsp)
