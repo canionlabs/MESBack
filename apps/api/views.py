@@ -207,3 +207,42 @@ class InfoWeeklyView(APIView):
             print(rsp)
             # rsp[device.name] = self.weekly_prod(device)
         return JsonResponse(rsp)
+
+
+class InfoDailyView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_daily_prod(self, device):
+        def get_name(pkg_type):
+            try:
+                return getattr(device, f'type_{pkg_type}')
+            except Exception as e:
+                pass
+        
+        today = datetime.now()
+        init_day = today.replace(hour=0, minute=0, second=0)
+        final_day = today.replace(hour=23, minute=59, second=59)
+        rsp_daily = {}
+        for pkg_type in ['a', 'b', 'c', 'd']:
+            if get_name(pkg_type):
+                pkg_name = get_name(pkg_type)
+                initial_query = mongo_db.PackageModel.objects(
+                    device_id=device.device_id,
+                    package_type=pkg_type,
+                    time__gte=init_day, time__lte=final_day).all()
+                rsp_daily[pkg_name] = []
+                for hour in range(0, 23):
+                    final_hour = init_day.replace(minute=59, second=59)
+                    count = initial_query.filter(
+                        time__gte=init_day, time__lte=final_hour).count()
+                    rsp_daily[pkg_name].append(count)
+                    init_day = init_day + timedelta(hours=1)
+        return rsp_daily
+
+    def get(self, request):
+        rsp = {}
+        client = self.request.user.client
+        devices = client.get_devices()
+        for device in devices:
+            rsp.update(self.get_daily_prod(device))
+        return JsonResponse(rsp)
