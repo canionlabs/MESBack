@@ -2,25 +2,19 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from django.http import JsonResponse
 
-from . import mongo_db
-
 from datetime import datetime, timedelta
 
 from mongoengine import connect
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING
 
 
-connect('mes', alias='default')
 client = MongoClient()
 packages = client.mes.packages
-
-
-def fill_query(query, device):
-    default_types = ['a', 'b', 'c', 'd']
-    for pkg_type in default_types:
-        if not getattr(device, f'type_{pkg_type}'):
-            query = query.filter(package_type__ne=pkg_type)
-    return query
+packages.create_index([
+    ('device_id', DESCENDING),
+    ('time', DESCENDING),
+    ('type', DESCENDING)
+])
 
 
 class CardsView(APIView):
@@ -141,7 +135,7 @@ class InfoMonthlyView(APIView):
                 return getattr(device, f'type_{pkg_type}')
             except Exception as e:
                 pass
-        
+
         def get_last_day(now):
             last_day = 31
             while True:
@@ -240,29 +234,58 @@ class InfoDailyView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_daily_prod(self, device):
+        def get_active_types():
+            active_types = ['a', 'b', 'c', 'd']
+            for pkg_type in active_types:
+                if not getattr(device, f'type_{pkg_type}'):
+                    active_types.remove(pkg_type)
+            print(active_types)
+            return active_types
+
+        def create_filter():
+            type_filter = {'$or': []}
+            for act_type in get_active_types():
+                type_filter['$or'].append({'type': act_type})
+            return type_filter
+
         def get_name(pkg_type):
             try:
                 return getattr(device, f'type_{pkg_type}')
             except Exception as e:
                 pass
-        
+
         today = datetime.now()
         init_day = today.replace(hour=0, minute=0, second=0)
         final_day = today.replace(hour=23, minute=59, second=59)
         rsp_daily = {}
-        for pkg_type in ['a', 'b', 'c', 'd']:
+        print(get_active_types())
+        or_filter = create_filter()
+        main_query = packages.find({
+            'device_id': device.device_id,
+            'time': {'$gte': init_day, '$lte': final_day},
+            **or_filter
+        })
+        for pkg_type in get_active_types():
             if get_name(pkg_type):
                 pkg_name = get_name(pkg_type)
-                initial_query = mongo_db.PackageModel.objects(
-                    device_id=device.device_id,
-                    package_type=pkg_type,
-                    time__gte=init_day, time__lte=final_day).all()
                 rsp_daily[pkg_name] = []
                 for hour in range(0, 23):
                     final_hour = init_day.replace(minute=59, second=59)
-                    count = initial_query.filter(
-                        time__gte=init_day, time__lte=final_hour).count()
+                    iso_final = final_hour.isoformat()
+                    iso_init = init_day.isoformat()
+                    js_filter = f'''
+                        function () {{
+                            return (
+                                this.time >= ISODate("{iso_init}") &&
+                                this.time <= ISODate("{iso_final}") &&
+                                this.type == "{pkg_type}"
+                            )
+                        }}
+                    '''
+                    query_hour = main_query.where(js_filter)
+                    count = query_hour.count()
                     rsp_daily[pkg_name].append(count)
+                    print(rsp_daily)
                     init_day = init_day + timedelta(hours=1)
         return rsp_daily
 
