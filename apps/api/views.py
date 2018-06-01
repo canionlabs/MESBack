@@ -129,6 +129,13 @@ class InfoMonthlyView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def montly_prod(self, device):
+        def get_active_types():
+            active_types = ['a', 'b', 'c', 'd']
+            for pkg_type in active_types:
+                if not getattr(device, f'type_{pkg_type}'):
+                    active_types.remove(pkg_type)
+            return active_types
+
         def get_name(pkg_type):
             try:
                 return getattr(device, f'type_{pkg_type}')
@@ -146,12 +153,9 @@ class InfoMonthlyView(APIView):
         monthly_rsp = {}
         now = datetime.now()
         device_id = device.device_id
-        start_month = now.replace(
-            day=1, hour=0, minute=0, second=0
-        )
+        start_month = now.replace(day=1, hour=0, minute=0, second=0)
         final_month = now.replace(day=get_last_day(now))
-        types = ['a', 'b', 'c', 'd']
-        for pkg_type in types:
+        for pkg_type in get_active_types():
             type_name = get_name(pkg_type)
             if type_name:
                 type_count = packages.find({
@@ -168,9 +172,6 @@ class InfoMonthlyView(APIView):
         devices = client.get_devices()
         for device in devices:
             rsp.update(self.montly_prod(device))
-        # rsp = {self.montly_prod(device) for device in devices}
-        print(type(rsp))
-        print(rsp)
         return JsonResponse(rsp)
 
 
@@ -178,6 +179,13 @@ class InfoWeeklyView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def weekly_prod(self, device):
+        def get_active_types():
+            active_types = ['a', 'b', 'c', 'd']
+            for pkg_type in active_types:
+                if not getattr(device, f'type_{pkg_type}'):
+                    active_types.remove(pkg_type)
+            return active_types
+
         def get_start_week(now):
             start_week = now.replace(hour=0, minute=0, second=0)
             one_day = timedelta(days=1)
@@ -197,7 +205,7 @@ class InfoWeeklyView(APIView):
         start_week = get_start_week(now)
         final_week = now
         one_day = timedelta(days=1)
-        types = ['a', 'b', 'c', 'd']
+        types = get_active_types()
         while start_week.weekday() <= final_week.weekday():
             weekly_rsp[start_week.weekday()] = {}
 
@@ -205,10 +213,11 @@ class InfoWeeklyView(APIView):
                 type_name = get_name(pkg_type)
                 final_day = start_week.replace(hour=23, minute=59, second=59)
                 if type_name:
-                    type_count = mongo_db.PackageModel.objects(
-                        package_type=pkg_type, device_id=device_id,
-                        time__gte=start_week, time__lte=final_day
-                    ).count()
+                    type_count = packages.find({
+                        'device_id': device_id,
+                        'time': {'$gte': start_week, '$lte': final_day},
+                        'type': pkg_type
+                    }).count()
                     weekly_rsp[start_week.weekday()][type_name] = type_count
 
             start_week = start_week + one_day
@@ -224,9 +233,6 @@ class InfoWeeklyView(APIView):
                     rsp[k].update(v)
                 else:
                     rsp[k] = v
-            # rsp.update(self.weekly_prod(device))
-            print(rsp)
-            # rsp[device.name] = self.weekly_prod(device)
         return JsonResponse(rsp)
 
 
