@@ -134,6 +134,14 @@ class InfoMonthlyView(APIView):
                 return getattr(device, f'type_{pkg_type}')
             except Exception as e:
                 pass
+        
+        def get_last_day(now):
+            last_day = 31
+            while True:
+                try:
+                    return now.replace(day=last_day).day
+                except ValueError:
+                    last_day -= 1
 
         monthly_rsp = {}
         now = datetime.now()
@@ -141,15 +149,16 @@ class InfoMonthlyView(APIView):
         start_month = now.replace(
             day=1, hour=0, minute=0, second=0
         )
-        final_month = now
+        final_month = now.replace(day=get_last_day(now))
         types = ['a', 'b', 'c', 'd']
         for pkg_type in types:
             type_name = get_name(pkg_type)
             if type_name:
-                type_count = mongo_db.PackageModel.objects(
-                    package_type=pkg_type,
-                    device_id=device_id,
-                    time__gte=start_month, time__lte=final_month).count()
+                type_count = packages.find({
+                    'device_id': device_id,
+                    'time': {'$gte': start_month, '$lte': final_month},
+                    'type': pkg_type
+                }).count()
                 monthly_rsp[type_name] = type_count
         return monthly_rsp
 
