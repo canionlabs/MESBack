@@ -7,8 +7,12 @@ from . import mongo_db
 from datetime import datetime, timedelta
 
 from mongoengine import connect
+from pymongo import MongoClient
+
 
 connect('mes', alias='default')
+client = MongoClient()
+packages = client.mes.packages
 
 
 def fill_query(query, device):
@@ -23,33 +27,43 @@ class CardsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def device_info(self, device):
+
+        def get_active_types():
+            active_types = ['a', 'b', 'c', 'd']
+            for pkg_type in active_types:
+                if not getattr(device, f'type_{pkg_type}'):
+                    active_types.remove(pkg_type)
+            return active_types
+
+        def create_filter():
+            type_filter = {'$or': []}
+            for act_type in get_active_types():
+                type_filter['$or'].append({'type': act_type})
+            return type_filter
+
         now = datetime.now()
-        start_day = now.replace(
-            hour=0, minute=0, second=0
-        )
-        final_day = now.replace(
-            hour=23, minute=59, second=59
-        )
+        start_day = now.replace(hour=0, minute=0, second=0)
+        final_day = now.replace(hour=23, minute=59, second=59)
         device_id = device.device_id
+        or_filter = create_filter()
 
         def daily_prod():
-            query = mongo_db.PackageModel.objects(
-                time__gte=start_day, time__lte=final_day, 
-                device_id=device_id
-            ).all()
-            filter_query = fill_query(query, device)
-            return filter_query.count()
+            return packages.find({
+                'device_id': device_id,
+                'time': {'$gte': start_day, '$lte': final_day},
+                **or_filter
+            }).count()
 
         def daily_init():
-            query = mongo_db.PackageModel.objects(
-                time__gte=start_day, time__lte=final_day,
-                device_id=device_id
-            ).all()
-            filter_query = fill_query(query, device)
-            init_pkg = filter_query.limit(1)[0]
-            if init_pkg:
-                return init_pkg.time.strftime('%H:%M:%S')
-            else:
+            daily_query = packages.find({
+                'device_id': device_id,
+                'time': {'$gte': start_day, '$lte': final_day},
+                **or_filter
+            }).limit(1)
+
+            try:
+                return list(daily_query)[0]['time'].strftime('%H:%M:%S')
+            except IndexError:
                 return '--:--:--'
 
         def weekly_type():
@@ -69,13 +83,12 @@ class CardsView(APIView):
             weekly_start_date = get_start_week(now)
             value = 0
             pkg_type = ''
-            for t in ['a', 'b', 'c', 'd']:
-                query = mongo_db.PackageModel.objects(
-                    time__gte=weekly_start_date, time__lte=final_day,
-                    device_id=device_id, package_type=t
-                ).all()
-                filter_query = fill_query(query, device)
-                count = filter_query.count()
+            for t in get_active_types():
+                count = packages.find({
+                    'device_id': device_id,
+                    'time': {'$gte': weekly_start_date, '$lte': final_day},
+                    'type': t
+                }).count()
                 if count > value:
                     value = count
                     pkg_type = t
@@ -90,12 +103,11 @@ class CardsView(APIView):
                 return start_week
 
             weekly_start_date = get_start_week(now)
-            query = mongo_db.PackageModel.objects(
-                time__gte=weekly_start_date, time__lte=final_day,
-                device_id=device_id
-            ).all()
-            filter_query = fill_query(query, device) 
-            return filter_query.count()
+            return packages.find({
+                'device_id': device_id,
+                'time': {'$gte': weekly_start_date, '$lte': final_day},
+                **or_filter
+            }).count()
 
         return {
             'device_id': f'{device_id}',
