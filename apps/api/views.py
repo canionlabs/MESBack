@@ -4,7 +4,6 @@ from django.http import JsonResponse
 
 from datetime import datetime, timedelta
 
-from mongoengine import connect
 from pymongo import MongoClient, DESCENDING
 
 
