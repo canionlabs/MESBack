@@ -22,10 +22,10 @@ class CardsView(APIView):
     def device_info(self, device):
 
         def get_active_types():
-            active_types = ['a', 'b', 'c', 'd']
-            for pkg_type in active_types:
-                if not getattr(device, f'type_{pkg_type}'):
-                    active_types.remove(pkg_type)
+            active_types = []
+            for pkg_tp in ['a', 'b', 'c', 'd']:
+                if getattr(device, f'type_{pkg_tp}'):
+                    active_types.append(pkg_tp)
             return active_types
 
         def create_filter():
@@ -125,10 +125,10 @@ class InfoMonthlyView(APIView):
 
     def montly_prod(self, device):
         def get_active_types():
-            active_types = ['a', 'b', 'c', 'd']
-            for pkg_type in active_types:
-                if not getattr(device, f'type_{pkg_type}'):
-                    active_types.remove(pkg_type)
+            active_types = []
+            for pkg_tp in ['a', 'b', 'c', 'd']:
+                if getattr(device, f'type_{pkg_tp}'):
+                    active_types.append(pkg_tp)
             return active_types
 
         def get_name(pkg_type):
@@ -175,10 +175,10 @@ class InfoWeeklyView(APIView):
 
     def weekly_prod(self, device):
         def get_active_types():
-            active_types = ['a', 'b', 'c', 'd']
-            for pkg_type in active_types:
-                if not getattr(device, f'type_{pkg_type}'):
-                    active_types.remove(pkg_type)
+            active_types = []
+            for pkg_tp in ['a', 'b', 'c', 'd']:
+                if getattr(device, f'type_{pkg_tp}'):
+                    active_types.append(pkg_tp)
             return active_types
 
         def get_start_week(now):
@@ -186,6 +186,7 @@ class InfoWeeklyView(APIView):
             one_day = timedelta(days=1)
             while start_week.weekday() != 0:
                 start_week = start_week - one_day
+            print(start_week.weekday())
             return start_week
 
         def get_name(pkg_type):
@@ -216,6 +217,7 @@ class InfoWeeklyView(APIView):
                     weekly_rsp[start_week.weekday()][type_name] = type_count
 
             start_week = start_week + one_day
+        print(device.name, '  ', weekly_rsp)
         return weekly_rsp
 
     def get(self, request):
@@ -236,10 +238,10 @@ class InfoDailyView(APIView):
 
     def get_daily_prod(self, device):
         def get_active_types():
-            active_types = ['a', 'b', 'c', 'd']
-            for pkg_type in active_types:
-                if not getattr(device, f'type_{pkg_type}'):
-                    active_types.remove(pkg_type)
+            active_types = []
+            for pkg_tp in ['a', 'b', 'c', 'd']:
+                if getattr(device, f'type_{pkg_tp}'):
+                    active_types.append(pkg_tp)
             return active_types
 
         def create_filter():
