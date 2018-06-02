@@ -240,7 +240,6 @@ class InfoDailyView(APIView):
             for pkg_type in active_types:
                 if not getattr(device, f'type_{pkg_type}'):
                     active_types.remove(pkg_type)
-            # print(active_types)
             return active_types
 
         def create_filter():
@@ -256,10 +255,12 @@ class InfoDailyView(APIView):
                 pass
 
         today = datetime.now()
-        init_day = today.replace(hour=0, minute=0, second=0)
-        final_day = today.replace(hour=23, minute=59, second=59)
+        init_day = today.replace(
+            hour=0, minute=0, second=0, microsecond=000000)
+        final_day = today.replace(
+            hour=23, minute=59, second=59, microsecond=999999)
+
         rsp_daily = {}
-        # print(get_active_types())
         or_filter = create_filter()
         main_query = packages.find({
             'device_id': device.device_id,
@@ -270,8 +271,11 @@ class InfoDailyView(APIView):
             if get_name(pkg_type):
                 pkg_name = get_name(pkg_type)
                 rsp_daily[pkg_name] = []
-                for hour in range(0, 23):
-                    final_hour = init_day.replace(minute=59, second=59)
+                init_day = today.replace(
+                    hour=0, minute=0, second=0, microsecond=000000)
+                for hour in range(0, 24):
+                    final_hour = init_day.replace(
+                        minute=59, second=59, microsecond=999999)
                     iso_final = final_hour.isoformat()
                     iso_init = init_day.isoformat()
                     js_filter = f'''
@@ -286,8 +290,8 @@ class InfoDailyView(APIView):
                     query_hour = main_query.where(js_filter)
                     count = query_hour.count()
                     rsp_daily[pkg_name].append(count)
-                    # print(rsp_daily)
                     init_day = init_day + timedelta(hours=1)
+
         return rsp_daily
 
     def get(self, request):
