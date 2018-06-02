@@ -4,14 +4,14 @@ from django.http import JsonResponse
 
 from datetime import datetime, timedelta
 
-from pymongo import MongoClient, DESCENDING
+from pymongo import MongoClient, DESCENDING, ASCENDING
 
 
 client = MongoClient()
 packages = client.mes.packages
 packages.create_index([
     ('device_id', DESCENDING),
-    ('time', DESCENDING),
+    ('time', ASCENDING),
     ('type', DESCENDING)
 ])
 
@@ -35,15 +35,17 @@ class CardsView(APIView):
             return type_filter
 
         now = datetime.now()
-        start_day = now.replace(hour=0, minute=0, second=0)
-        final_day = now.replace(hour=23, minute=59, second=59)
+        start_day = now.replace(
+            hour=0, minute=0, second=0, microsecond=000000)
+        final_day = now.replace(
+            hour=23, minute=59, second=59, microsecond=999999)
         device_id = device.device_id
         or_filter = create_filter()
 
         def daily_prod():
             return packages.find({
-                'device_id': device_id,
                 'time': {'$gte': start_day, '$lte': final_day},
+                'device_id': device_id,
                 **or_filter
             }).count()
 
@@ -238,7 +240,7 @@ class InfoDailyView(APIView):
             for pkg_type in active_types:
                 if not getattr(device, f'type_{pkg_type}'):
                     active_types.remove(pkg_type)
-            print(active_types)
+            # print(active_types)
             return active_types
 
         def create_filter():
@@ -257,7 +259,7 @@ class InfoDailyView(APIView):
         init_day = today.replace(hour=0, minute=0, second=0)
         final_day = today.replace(hour=23, minute=59, second=59)
         rsp_daily = {}
-        print(get_active_types())
+        # print(get_active_types())
         or_filter = create_filter()
         main_query = packages.find({
             'device_id': device.device_id,
@@ -284,7 +286,7 @@ class InfoDailyView(APIView):
                     query_hour = main_query.where(js_filter)
                     count = query_hour.count()
                     rsp_daily[pkg_name].append(count)
-                    print(rsp_daily)
+                    # print(rsp_daily)
                     init_day = init_day + timedelta(hours=1)
         return rsp_daily
 
