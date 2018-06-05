@@ -199,10 +199,9 @@ class InfoWeeklyView(APIView):
         now = datetime.now()
         device_id = device.device_id
         start_week = get_start_week(now)
-        final_week = now
         one_day = timedelta(days=1)
         types = get_active_types()
-        while start_week.weekday() <= final_week.weekday():
+        for i in range(0, 7):
             weekly_rsp[start_week.weekday()] = {}
 
             for pkg_type in types:
@@ -217,7 +216,6 @@ class InfoWeeklyView(APIView):
                     weekly_rsp[start_week.weekday()][type_name] = type_count
 
             start_week = start_week + one_day
-        print(device.name, '  ', weekly_rsp)
         return weekly_rsp
 
     def get(self, request):
