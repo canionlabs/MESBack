@@ -21,6 +21,9 @@ class Organization(DefaultModel):
     def __str__(self):
         return f'{self.name}'
 
+    def get_devices(self):
+        return self.org_device.all()
+
 
 class Client(DefaultModel):
 
