@@ -2,8 +2,9 @@ from django.conf.urls import url
 from rest_framework_jwt import views as jwt_views
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from apps.api.views import (
-    CardsView, InfoMonthlyView, InfoWeeklyView, InfoDailyView)
+from apps.api.views import dashboard as dash_views
+
+from apps.api.views import chatbot as chat_views
 
 
 app_name = 'api'
@@ -13,12 +14,18 @@ urlpatterns = [
     url(r'^auth/token-refresh/$', jwt_views.refresh_jwt_token),
     url(r'^auth/token-verify/$', jwt_views.verify_jwt_token),
 
-    url(r'^info/cards/$', CardsView.as_view(
+    # Dashboard Endpoints
+    url(r'^info/cards/$', dash_views.CardsView.as_view(
         authentication_classes=[JSONWebTokenAuthentication])),
-    url(r'^info/monthly/$', InfoMonthlyView.as_view(
+    url(r'^info/monthly/$', dash_views.InfoMonthlyView.as_view(
         authentication_classes=[JSONWebTokenAuthentication])),
-    url(r'^info/weekly/$', InfoWeeklyView.as_view(
+    url(r'^info/weekly/$', dash_views.InfoWeeklyView.as_view(
         authentication_classes=[JSONWebTokenAuthentication])),
-    url(r'^info/daily/$', InfoDailyView.as_view(
+    url(r'^info/daily/$', dash_views.InfoDailyView.as_view(
         authentication_classes=[JSONWebTokenAuthentication])),
+
+    # ChatBot Endpoints
+    url(r'^chatbot/check/$', chat_views.CheckView.as_view()),
+    url(r'^chatbot/daily/$', chat_views.DailyView.as_view()),
+    url(r'^chatbot/weekly/$', chat_views.WeeklyView.as_view()),
 ]
