@@ -27,4 +27,5 @@ urlpatterns = [
     # ChatBot Endpoints
     url(r'^chatbot/check/$', chat_views.CheckView.as_view()),
     url(r'^chatbot/daily/$', chat_views.DailyView.as_view()),
+    url(r'^chatbot/weekly/$', chat_views.WeeklyView.as_view()),
 ]
