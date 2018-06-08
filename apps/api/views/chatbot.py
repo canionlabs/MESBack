@@ -34,7 +34,7 @@ class CheckView(APIView):
 
 class DailyView(APIView):
 
-    def get_daily_prod(self, device):
+    def get_daily_prod(self, device, req_date=None):
         def get_active_types():
             active_types = []
             for pkg_tp in ['a', 'b', 'c', 'd']:
@@ -54,7 +54,8 @@ class DailyView(APIView):
             except Exception as e:
                 pass
 
-        today = datetime.now()
+        now = datetime.now()
+        today = datetime.strptime(req_date, '%d/%m/%Y') if req_date else now
         init_day = today.replace(
             hour=0, minute=0, second=0, microsecond=000000)
         final_day = today.replace(
@@ -92,12 +93,13 @@ class DailyView(APIView):
     def post(self, request):
         rsp = {}
         chat_token = self.request.data.get('org_token')
+        req_date = self.request.data.get('date')
         query_org = Organization.objects.filter(chatbot_token=chat_token)
         if query_org.exists():
             org = query_org.first()
             devices = org.get_devices()
             for device in devices:
-                rsp.update(self.get_daily_prod(device))
+                rsp.update(self.get_daily_prod(device, req_date))
         return JsonResponse(rsp)
 
 
