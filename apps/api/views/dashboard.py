@@ -15,6 +15,8 @@ packages.create_index([
     ('type', DESCENDING)
 ])
 
+PACKAGE_TYPES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+
 
 class CardsView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -23,7 +25,7 @@ class CardsView(APIView):
 
         def get_active_types():
             active_types = []
-            for pkg_tp in ['a', 'b', 'c', 'd']:
+            for pkg_tp in PACKAGE_TYPES:
                 if getattr(device, f'type_{pkg_tp}'):
                     active_types.append(pkg_tp)
             return active_types
@@ -126,7 +128,7 @@ class InfoMonthlyView(APIView):
     def montly_prod(self, device):
         def get_active_types():
             active_types = []
-            for pkg_tp in ['a', 'b', 'c', 'd']:
+            for pkg_tp in PACKAGE_TYPES:
                 if getattr(device, f'type_{pkg_tp}'):
                     active_types.append(pkg_tp)
             return active_types
@@ -176,7 +178,7 @@ class InfoWeeklyView(APIView):
     def weekly_prod(self, device):
         def get_active_types():
             active_types = []
-            for pkg_tp in ['a', 'b', 'c', 'd']:
+            for pkg_tp in PACKAGE_TYPES:
                 if getattr(device, f'type_{pkg_tp}'):
                     active_types.append(pkg_tp)
             return active_types
@@ -237,7 +239,7 @@ class InfoDailyView(APIView):
     def get_daily_prod(self, device):
         def get_active_types():
             active_types = []
-            for pkg_tp in ['a', 'b', 'c', 'd']:
+            for pkg_tp in PACKAGE_TYPES:
                 if getattr(device, f'type_{pkg_tp}'):
                     active_types.append(pkg_tp)
             return active_types

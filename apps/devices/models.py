@@ -14,6 +14,10 @@ class Device(DefaultModel):
     type_b = models.CharField('Tipo B', max_length=75, null=True, blank=True)
     type_c = models.CharField('Tipo C', max_length=75, null=True, blank=True)
     type_d = models.CharField('Tipo D', max_length=75, null=True, blank=True)
+    type_e = models.CharField('Tipo E', max_length=75, null=True, blank=True)
+    type_f = models.CharField('Tipo F', max_length=75, null=True, blank=True)
+    type_g = models.CharField('Tipo G', max_length=75, null=True, blank=True)
+    type_h = models.CharField('Tipo H', max_length=75, null=True, blank=True)
 
     def __str__(self):
         return self.name or self.device_id
