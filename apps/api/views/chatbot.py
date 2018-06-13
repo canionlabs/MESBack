@@ -8,7 +8,7 @@ from pymongo import MongoClient, DESCENDING, ASCENDING
 from datetime import datetime, timedelta
 
 
-client = MongoClient()
+client = MongoClient('mongo')
 packages = client.mes.packages
 packages.create_index([
     ('device_id', DESCENDING),
