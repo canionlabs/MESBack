@@ -110,3 +110,6 @@ ENV/
 
 /static
 .ini
+
+# DoxyGen documentation
+docs/code/

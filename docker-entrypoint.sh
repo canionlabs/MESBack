@@ -1,6 +1,5 @@
 #!/bin/sh
-apk update -y
-apk upgrade -y
+apk update && apk upgrade 
 apk add $(cat apk.txt)
 pip3 install -r requirements.txt
 python manage.py migrate
