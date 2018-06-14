@@ -4,11 +4,14 @@ from django.http import JsonResponse
 from apps.customers.models import Organization
 
 from pymongo import MongoClient, DESCENDING, ASCENDING
+from prettyconf import config
 
 from datetime import datetime, timedelta
 
 
-client = MongoClient('mongo')
+MONGO_URI = config('MONGO_URI', default='mongodb://localhost:27017/')
+
+client = MongoClient(MONGO_URI)
 packages = client.mes.packages
 packages.create_index([
     ('device_id', DESCENDING),
