@@ -5,7 +5,7 @@
 #### DEV Environment
 
 ```
-$ make init-dev 
+make init-dev 
 ```
 
 #### PROD Environment
@@ -24,9 +24,9 @@ DATABASE_URL=postgres://user:password@127.0.0.1:5432/mes_cloud
 
 ### Generate documentation
 
-Install (doxygen)[http://www.stack.nl/~dimitri/doxygen/download.html]
+Install [doxygen](http://www.stack.nl/~dimitri/doxygen/download.html)
 
 ```
 # Generate / Update documentation and server 
-$ make gen-doc
+make gen-doc
 ```
