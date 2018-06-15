@@ -23,7 +23,9 @@ PACKAGE_TYPES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
 
 class CheckView(APIView):
-
+    """
+    Check if organization token exists
+    """
     def post(self, request):
         rsp = {}
 
@@ -38,7 +40,9 @@ class CheckView(APIView):
 
 
 class DailyView(APIView):
-
+    """
+    Production data for a specific day
+    """
     def get_daily_prod(self, device, req_date=None):
         def get_active_types():
             active_types = []
@@ -109,7 +113,9 @@ class DailyView(APIView):
 
 
 class WeeklyView(APIView):
-
+    """
+    Weekly production data
+    """
     def get_weekly_prod(self, device):
         def get_active_types():
             active_types = []
