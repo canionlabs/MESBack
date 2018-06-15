@@ -22,6 +22,9 @@ PACKAGE_TYPES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
 
 class CardsView(APIView):
+    """
+    Returns data to fill cards
+    """
     permission_classes = (permissions.IsAuthenticated,)
 
     def device_info(self, device):
@@ -126,6 +129,9 @@ class CardsView(APIView):
 
 
 class InfoMonthlyView(APIView):
+    """
+    Returns data to fill monthly card
+    """
     permission_classes = (permissions.IsAuthenticated,)
 
     def montly_prod(self, device):
@@ -176,6 +182,9 @@ class InfoMonthlyView(APIView):
 
 
 class InfoWeeklyView(APIView):
+    """
+    Returns data to fill weekly card
+    """
     permission_classes = (permissions.IsAuthenticated,)
 
     def weekly_prod(self, device):
@@ -237,6 +246,9 @@ class InfoWeeklyView(APIView):
 
 
 class InfoDailyView(APIView):
+    """
+    Returns data to fill daily card
+    """
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_daily_prod(self, device):
