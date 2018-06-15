@@ -47,7 +47,7 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'corsheaders',
-    # 'rest_framework_swagger',
+    'rest_framework_swagger',
 ]
 
 LOCAL_APPS = [
@@ -55,7 +55,6 @@ LOCAL_APPS = [
     'apps.api',
     'apps.customers',
     'apps.devices',
-    'apps.dashboard',
 ]
 
 INSTALLED_APPS = (DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS)
@@ -123,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'dashboard:home'
+# LOGIN_REDIRECT_URL = 'dashboard:home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
