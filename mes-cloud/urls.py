@@ -32,4 +32,7 @@ urlpatterns = [
         customers_views.ForgotPassword.as_view(), name='forgot-password'),
 
     url(r'^api/', include('apps.api.urls', namespace='api')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
