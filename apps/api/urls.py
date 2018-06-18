@@ -4,8 +4,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_swagger.views import get_swagger_view
 
 from apps.api.views import dashboard as dash_views
-
 from apps.api.views import chatbot as chat_views
+from apps.api.views import receiver as rec_views
 
 
 schema_view = get_swagger_view(title='API Documentation')
@@ -36,4 +36,7 @@ urlpatterns = [
     url(r'^chatbot/check/$', chat_views.CheckView.as_view()),
     url(r'^chatbot/daily/$', chat_views.DailyView.as_view()),
     url(r'^chatbot/weekly/$', chat_views.WeeklyView.as_view()),
+
+    # Receiver Endpoints
+    url(r'^receiver/$', rec_views.ReceiverView.as_view()),
 ]
