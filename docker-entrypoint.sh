@@ -1,7 +1,7 @@
 #!/bin/sh
 apk update && apk upgrade 
 apk add $(cat apk.txt)
-pip3 install -r requirements.txt
+make init-prod
 python manage.py migrate
 python manage.py collectstatic --noinput
 
