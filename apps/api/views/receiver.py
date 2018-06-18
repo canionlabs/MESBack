@@ -1,5 +1,8 @@
-from rest_framework.views import APIView
 from django.http import JsonResponse
+
+from rest_framework.views import APIView
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 from apps.devices.models import Device
 
@@ -26,7 +29,21 @@ class ReceiverView(APIView):
     """
     Receive gateway data and save.
     """
-    def get(self, request):
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['type', 'device_id', 'time'],
+            properties={
+                'type': openapi.Schema(type=openapi.TYPE_STRING),
+                'device_id': openapi.Schema(type=openapi.TYPE_STRING),
+                'time': openapi.Schema(type=openapi.TYPE_STRING)
+            },
+        ),
+        security=[],
+        responses={200: '{}'}
+    )
+    def post(self, request):
 
         rsp = {}
         data = self.request.data
