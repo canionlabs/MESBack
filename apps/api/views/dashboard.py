@@ -200,8 +200,9 @@ class InfoWeeklyView(APIView):
             one_day = timedelta(days=1)
             while start_week.weekday() != 0:
                 start_week = start_week - one_day
-            print(start_week.weekday())
-            return start_week
+
+            # Return Monday
+            return start_week - one_day
 
         def get_name(pkg_type):
             try:
@@ -215,6 +216,7 @@ class InfoWeeklyView(APIView):
         start_week = get_start_week(now)
         one_day = timedelta(days=1)
         types = get_active_types()
+
         for i in range(0, 7):
             weekly_rsp[start_week.weekday()] = {}
 
