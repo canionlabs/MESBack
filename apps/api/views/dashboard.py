@@ -210,6 +210,17 @@ class InfoWeeklyView(APIView):
             except Exception as e:
                 pass
 
+        # Start the week with monday as initial day
+        def reorder_weekdays(weekly_dict):
+            reorder_weekly = {}
+            for key, value in weekly_dict.items():
+                # Check monday 
+                if key == 6:
+                    reorder_weekly[0] = value
+                else:
+                    reorder_weekly[key + 1] = value
+            return reorder_weekly
+
         weekly_rsp = {}
         now = datetime.now()
         device_id = device.device_id
@@ -232,7 +243,7 @@ class InfoWeeklyView(APIView):
                     weekly_rsp[start_week.weekday()][type_name] = type_count
 
             start_week = start_week + one_day
-        return weekly_rsp
+        return reorder_weekdays(weekly_rsp)
 
     def get(self, request):
         rsp = {}
