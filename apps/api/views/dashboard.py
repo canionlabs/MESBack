@@ -79,9 +79,10 @@ class CardsView(APIView):
             def get_start_week(now):
                 start_week = now.replace(hour=0, minute=0, second=0)
                 one_day = timedelta(days=1)
-                while start_week.weekday() != 1:
+                while start_week.weekday() != 0:
                     start_week = start_week - one_day
-                return start_week
+                # Return Monday
+                return start_week - one_day
 
             weekly_start_date = get_start_week(now)
             value = 0
@@ -103,7 +104,8 @@ class CardsView(APIView):
                 one_day = timedelta(days=1)
                 while start_week.weekday() != 0:
                     start_week = start_week - one_day
-                return start_week
+                # Return Monday
+                return start_week - one_day
 
             weekly_start_date = get_start_week(now)
             return packages.find({
@@ -200,8 +202,9 @@ class InfoWeeklyView(APIView):
             one_day = timedelta(days=1)
             while start_week.weekday() != 0:
                 start_week = start_week - one_day
-            print(start_week.weekday())
-            return start_week
+
+            # Return Monday
+            return start_week - one_day
 
         def get_name(pkg_type):
             try:
@@ -209,12 +212,24 @@ class InfoWeeklyView(APIView):
             except Exception as e:
                 pass
 
+        # Start the week with monday as initial day
+        def reorder_weekdays(weekly_dict):
+            reorder_weekly = {}
+            for key, value in weekly_dict.items():
+                # Check monday 
+                if key == 6:
+                    reorder_weekly[0] = value
+                else:
+                    reorder_weekly[key + 1] = value
+            return reorder_weekly
+
         weekly_rsp = {}
         now = datetime.now()
         device_id = device.device_id
         start_week = get_start_week(now)
         one_day = timedelta(days=1)
         types = get_active_types()
+
         for i in range(0, 7):
             weekly_rsp[start_week.weekday()] = {}
 
@@ -230,7 +245,7 @@ class InfoWeeklyView(APIView):
                     weekly_rsp[start_week.weekday()][type_name] = type_count
 
             start_week = start_week + one_day
-        return weekly_rsp
+        return reorder_weekdays(weekly_rsp)
 
     def get(self, request):
         rsp = {}
