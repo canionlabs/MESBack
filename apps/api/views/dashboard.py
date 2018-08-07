@@ -79,9 +79,10 @@ class CardsView(APIView):
             def get_start_week(now):
                 start_week = now.replace(hour=0, minute=0, second=0)
                 one_day = timedelta(days=1)
-                while start_week.weekday() != 1:
+                while start_week.weekday() != 0:
                     start_week = start_week - one_day
-                return start_week
+                # Return Monday
+                return start_week - one_day
 
             weekly_start_date = get_start_week(now)
             value = 0
@@ -103,7 +104,8 @@ class CardsView(APIView):
                 one_day = timedelta(days=1)
                 while start_week.weekday() != 0:
                     start_week = start_week - one_day
-                return start_week
+                # Return Monday
+                return start_week - one_day
 
             weekly_start_date = get_start_week(now)
             return packages.find({
