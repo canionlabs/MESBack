@@ -52,7 +52,7 @@ class ReceiverView(APIView):
 
         if registered_device:
             packages.insert_one({
-                'type': data['package_type'],
+                'type': PACKAGE_TYPES[int(data['package_type']) - 1],
                 'device_id': data['device_id'],
                 'time': datetime.strptime(
                     data['created'], '%d/%m/%Y %H:%M:%S'
