@@ -47,13 +47,13 @@ class ReceiverView(APIView):
 
         rsp = {}
         data = self.request.data
-        device_id = data['device_id']
+        device_id = data.get('device_id')
         registered_device = Device.objects.filter(device_id=device_id).exists()
 
         if registered_device:
             packages.insert_one({
                 'type': PACKAGE_TYPES[int(data['package_type']) - 1],
-                'device_id': data['device_id'],
+                'device_id': device_id,
                 'time': datetime.strptime(
                     data['created'], '%d/%m/%Y %H:%M:%S'
                 ),

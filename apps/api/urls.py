@@ -44,6 +44,8 @@ urlpatterns = [
         authentication_classes=[JSONWebTokenAuthentication])),
     url(r'^info/daily/$', dash_views.InfoDailyView.as_view(
         authentication_classes=[JSONWebTokenAuthentication])),
+    url(r'^info/production/$', dash_views.ProductionView.as_view(
+        authentication_classes=[JSONWebTokenAuthentication])),
 
     # ChatBot Endpoints
     url(r'^chatbot/check/$', chat_views.CheckView.as_view()),

@@ -1,6 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework import permissions
 from django.http import JsonResponse
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+
+from apps.devices.models import Device
 
 from pymongo import MongoClient, DESCENDING, ASCENDING
 from prettyconf import config
@@ -333,3 +337,83 @@ class InfoDailyView(APIView):
         for device in devices:
             rsp.update(self.get_daily_prod(device))
         return JsonResponse(rsp)
+
+
+class ProductionView(APIView):
+    """
+    Returns a time range production from a device
+    """
+    # permission_classes = (permissions.IsAuthenticated,)
+
+    def get_production(self, dt_start, dt_end, device=None):
+
+        def get_active_types():
+            active_types = []
+            for pkg_tp in PACKAGE_TYPES:
+                if getattr(device, f'type_{pkg_tp}'):
+                    active_types.append(pkg_tp)
+            return active_types
+
+        def get_name(pkg_type):
+            try:
+                return getattr(device, f'type_{pkg_type}')
+            except Exception as e:
+                pass
+
+        data = {}
+        for pkg_type in get_active_types():
+            if get_name(pkg_type):
+                pkg_name = get_name(pkg_type)
+                data[pkg_name] = packages.find({
+                    'device_id': device.device_id,
+                    'time': {'$gte': dt_start, '$lte': dt_end},
+                    'type': pkg_type
+                }).count()
+
+        return data
+
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name='device_id', in_=openapi.IN_FORM,
+                type=openapi.TYPE_STRING,
+                required=True
+            ),
+            openapi.Parameter(
+                name='start', in_=openapi.IN_FORM,
+                type=openapi.TYPE_STRING,
+                required=True
+            ),
+            openapi.Parameter(
+                name='end', in_=openapi.IN_FORM,
+                type=openapi.TYPE_STRING,
+                required=True
+            ),
+        ],
+        security=[],
+        responses={200: '{}'}
+    )
+    def get(self, request):
+        rsp = {}
+
+        data = self.request.GET
+
+        device_id = data.get('device_id')
+        ts_start = data.get('start')
+        ts_end = data.get('end')
+
+        device = Device.objects.filter(device_id=device_id)
+
+        if (ts_start and ts_end and device.exists()):
+            dt_start = datetime.fromtimestamp(int(ts_start))
+            dt_end = datetime.fromtimestamp(int(ts_end))
+            rsp.update(
+                self.get_production(
+                    dt_start, dt_end,
+                    device=device[0]
+                )
+            )
+
+        return JsonResponse(rsp)
+
