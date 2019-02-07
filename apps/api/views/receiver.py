@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -51,6 +53,7 @@ class ReceiverView(APIView):
         registered_device = Device.objects.filter(device_id=device_id).exists()
 
         if registered_device:
+            status_code = status.HTTP_201_CREATED
             packages.insert_one({
                 'type': PACKAGE_TYPES[int(data['package_type']) - 1],
                 'device_id': device_id,
@@ -58,5 +61,7 @@ class ReceiverView(APIView):
                     data['created'], '%d/%m/%Y %H:%M:%S'
                 ),
             })
+        else:
+            status_code = status.HTTP_400_BAD_REQUEST
 
-        return JsonResponse(rsp)
+        return Response(status=status_code)
