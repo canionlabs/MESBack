@@ -109,7 +109,7 @@ ENV/
 /media
 
 /static
-.ini
+*.ini
 
 # DoxyGen documentation
 docs/code/
